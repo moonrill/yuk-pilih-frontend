@@ -1,8 +1,10 @@
 import { Trash3Fill } from 'react-bootstrap-icons';
+import formatDate from '../../utils/dateFormatter';
 import { Choice } from './Choice';
 
 // eslint-disable-next-line react/prop-types
 export const Poll = ({title, description, creator, deadline, result}) => {
+  const newDeadline = formatDate(deadline);
   return (
     <div className="poll card shadow-sm mt-4">
       <div className="card-header align-items-center border-0">
@@ -11,7 +13,7 @@ export const Poll = ({title, description, creator, deadline, result}) => {
           Created by : {creator}
         </p>
         <p style={{ fontSize: '13px' }} className="m-0 text-primary">
-          Deadline : {deadline}
+          Deadline : {newDeadline}
         </p>
         <a
           href=""
