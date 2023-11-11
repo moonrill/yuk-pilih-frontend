@@ -20,7 +20,7 @@ export const Index = () => {
           </div>
         ) : (
           poll?.map((data) => {
-            return <Poll key={data.id} {...data}/>
+            return <Poll key={data.id} {...data} />;
           })
         )}
       </div>

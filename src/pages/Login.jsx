@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { setToken } from '../reducer/authSlice';
 import { setPassword, setUsername } from '../reducer/loginSlice';
 import { useLoginMutation } from '../services/authApi';
-import token from '../utils/token';
 
 const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
   const [error, setError] = useState(null);
   const { username, password } = useSelector((state) => state.login);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Check if user has logged in
+  if (token) return <Navigate to={'/'} />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,8 +27,8 @@ const Login = () => {
 
         console.log(response);
 
-        // Set token in localstorage
-        token.set(response.access_token);
+        // Set token in state and localstorage
+        dispatch(setToken(response?.access_token));
 
         // Redirect to poll page
         navigate('/');

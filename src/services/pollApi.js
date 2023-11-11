@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { appConfig } from "../../config/appConfig";
-import token from "../utils/token";
+import token from "../../utils/token";
 
 export const pollApi = createApi({
   reducerPath: "pollApi",
