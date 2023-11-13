@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
 import { Fab } from '../components/Fab';
@@ -8,23 +7,22 @@ import { authApi } from '../services/authApi';
 
 export const Layout = () => {
   const dispatch = useDispatch();
-  const {token, user} = useSelector((state) => state.auth);
-  const [loading, setLoading] = useState(true);
+  const { token, user } = useSelector((state) => state.auth);
 
-  if(token === null) return <Navigate to={'/login'}/>
+  if (token && !user) {
+    dispatch(authApi.endpoints.getUser.initiate(token))
+      .unwrap()
+      .then((user) => dispatch(setUser(user)));
+  }
 
-  dispatch(authApi.endpoints.getUser.initiate(token))
-    .unwrap()
-    .then((res) => dispatch(setUser(res)))
-    .catch(() => dispatch(setUser(null)))
-    .finally(() => setLoading(false));
+  if (!token && !user ) return <Navigate to={'/login'} />;
 
   return (
     <>
       <main>
-        <Navbar user={user} loading={loading}/>
+        <Navbar />
         <Outlet />
-        <Fab />
+        {user?.role == 'admin' ? <Fab /> : null}
       </main>
     </>
   );

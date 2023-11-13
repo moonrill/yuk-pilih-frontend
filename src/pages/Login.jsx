@@ -6,10 +6,11 @@ import { setPassword, setUsername } from '../reducer/loginSlice';
 import { useLoginMutation } from '../services/authApi';
 
 const Login = () => {
-  const [login, { isLoading }] = useLoginMutation();
-  const [error, setError] = useState(null);
   const { username, password } = useSelector((state) => state.login);
   const { token } = useSelector((state) => state.auth);
+  const [login, { isLoading }] = useLoginMutation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -41,7 +42,10 @@ const Login = () => {
       <div className="row d-flex justify-content-center align-items-center h-100">
         <div className="col-6 p-5 border rounded-4 shadow">
           <form onSubmit={handleSubmit}>
-            <h1 className="mb-5">YukPilih</h1>
+            <h1 className="mb-5">
+              <span>Yuk</span>
+              <span className='text-primary'>Pilih</span>
+            </h1>
             <div className="form-floating mb-3">
               <input
                 onChange={({ target }) => dispatch(setUsername(target.value))}
@@ -53,16 +57,20 @@ const Login = () => {
               />
               <label htmlFor="username">Username</label>
             </div>
-            <div className="form-floating mb-3">
+            <div className="form-floating mb-2">
               <input
                 onChange={({ target }) => dispatch(setPassword(target.value))}
-                type="password"
+                type={showPassword ? "text" : "password"}
                 className="form-control"
                 id="password"
                 placeholder="Password"
                 value={password}
               />
               <label htmlFor="password">Password</label>
+            </div>
+            <div className="form-check mb-3">
+              <label htmlFor="showPassword" className='user-select-none'>Show Password</label>
+              <input type="checkbox" id='showPassword' className='form-check-input' onChange={() => setShowPassword(!showPassword)}/>
             </div>
 
             {error && (
@@ -74,7 +82,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="btn btn-primary px-4 py-2"
+              className="btn btn-dark px-4 py-2"
             >
               {isLoading ? (
                 <div className="d-flex align-items-center gap-2">
