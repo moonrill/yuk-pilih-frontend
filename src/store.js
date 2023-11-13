@@ -1,5 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit';
 import { authSlice } from './reducer/authSlice';
+import { formPollSlice } from './reducer/formPollSlice';
 import { loginSlice } from './reducer/loginSlice';
 import { modalSlice } from './reducer/modalSlice';
 import { authApi } from './services/authApi';
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: authSlice.reducer,
     login: loginSlice.reducer,
     modal: modalSlice.reducer,
+    formPoll: formPollSlice.reducer
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(authApi.middleware, pollApi.middleware),
 })

@@ -8,6 +8,7 @@ export const pollApi = createApi({
     baseUrl: appConfig.apiUrl,
     jsonContentType: "application/json",
   }),
+  tagTypes: ["Polls"],
   endpoints: (builder) => ({
     getPolls: builder.query({
       query: () => ({
@@ -17,7 +18,19 @@ export const pollApi = createApi({
           Authorization: `Bearer ${token.get("access_token")}`,
         },
       }),
+      providesTags: [{type: "Polls", id: "LIST"}],
     }),
+    createPoll: builder.mutation({
+      query: ({data, token}) => ({
+        url: "/poll",
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: data,
+      }),
+      invalidatesTags: [{type: "Polls", id: "LIST"}],
+    })
   }),
 });
 

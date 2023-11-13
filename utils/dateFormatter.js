@@ -13,7 +13,7 @@ function formatDate (inputDate) {
 
   const formattedDate = date.toLocaleString('id-ID', options);
 
-  return formattedDate;
+  return formattedDate.replaceAll('.', ':');
 }
 
 export default formatDate;
