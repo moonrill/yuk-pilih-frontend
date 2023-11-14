@@ -30,8 +30,18 @@ export const pollApi = createApi({
         body: data,
       }),
       invalidatesTags: [{type: "Polls", id: "LIST"}],
+    }),
+    deletePoll: builder.mutation({
+      query: ({id, token}) => ({
+        url: `/poll/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }),
+      invalidatesTags: [{type: "Polls", id: "LIST"}],
     })
   }),
 });
 
-export const { useGetPollsQuery, useCreatePollMutation } = pollApi;
+export const { useGetPollsQuery, useCreatePollMutation, useDeletePollMutation } = pollApi;
