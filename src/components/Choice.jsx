@@ -7,7 +7,7 @@ export const Choice = ({percentage = 0, name = 'choice'}) => {
           <div className="progress-bar" style={{ width: `${percentage}%` }}></div>
         </div>
       </div>
-      <div className="col-lg-1 text-wrap">
+      <div className="col-lg-2 text-wrap">
         <div className="choice-desc" style={{ fontSize: '14px' }}>
           <div className="m-0 choice-name">{name}</div>
           <div className="m-0 choice-percentage">{percentage}%</div>
