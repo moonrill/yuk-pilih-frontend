@@ -4,6 +4,7 @@ import { Fab } from '../components/Fab';
 import { Navbar } from '../components/Navbar';
 import { setUser } from '../reducer/authSlice';
 import { authApi } from '../services/authApi';
+import { ModalPoll } from '../components/ModalPoll';
 
 export const Layout = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ export const Layout = () => {
     <>
       <main>
         <Navbar />
+        <ModalPoll />
         <Outlet />
         {user?.role == 'admin' ? <Fab /> : null}
       </main>

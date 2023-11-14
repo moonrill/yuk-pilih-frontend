@@ -34,7 +34,14 @@ const Login = () => {
         // Redirect to poll page
         navigate('/');
       })
-      .catch(({ data }) => setError(data.message));
+      .catch(({ data }) => {
+        setError(data.message)
+
+      // Set timeout to clear error after 5 seconds
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
+      });
   };
 
   return (
