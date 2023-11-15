@@ -14,6 +14,7 @@ export const authSlice = createSlice({
     },
     removeToken: (state) => {
       state.token = null;
+      state.user = null;
       token.remove();
     },
     setUser: (state, action) => {

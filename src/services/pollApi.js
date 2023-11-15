@@ -11,11 +11,11 @@ export const pollApi = createApi({
   tagTypes: ["Polls"],
   endpoints: (builder) => ({
     getPolls: builder.query({
-      query: () => ({
+      query: (token) => ({
         url: "/poll",
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token.get("access_token")}`,
+          Authorization: `Bearer ${token}`,
         },
       }),
       providesTags: [{type: "Polls", id: "LIST"}],

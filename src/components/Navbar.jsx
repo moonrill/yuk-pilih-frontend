@@ -27,11 +27,14 @@ export const Navbar = () => {
           </Link>
 
           {user?.role === "user" && (
-            <ul className="navbar-nav d-flex flex-row gap-2">
+            <ul className="navbar-nav d-flex flex-row gap-3">
               <Link to={"/"} className="nav-link">
+                Home
+              </Link>
+              <Link to={"/your-votes"} className="nav-link">
                 Your votes
               </Link>
-              <Link to={"/"} className="nav-link">
+              <Link to={"/expired-polls"} className="nav-link">
                 Expired polls
               </Link>
             </ul>

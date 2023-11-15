@@ -41,7 +41,6 @@ export const authApi = createApi({
       }),
       onQueryStarted(_queryParam, {dispatch}) {
         dispatch(removeToken())
-        dispatch(setUser(null))
       }
     })
   }),
