@@ -26,8 +26,6 @@ const Login = () => {
       .then((response) => {
         setError(false);
 
-        console.log(response);
-
         // Set token in state and localstorage
         dispatch(setToken(response?.access_token));
 

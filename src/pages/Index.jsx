@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Poll } from '../components/Poll';
+import { VoteButton } from '../components/VoteButton';
 import { useGetPollsQuery } from '../services/pollApi';
 
 export const Index = () => {
@@ -40,9 +41,15 @@ export const Index = () => {
 
         <div className="row mt-2 g-4">
           {!polls.hasOwnProperty('available_polls') && <div className='fs-5'>No poll available</div>}
-          {polls.available_polls?.map((poll) => {
-            return <Poll key={poll.id} {...poll} />;
-          })}
+          {polls.available_polls?.map((poll) => (
+            <Poll key={poll.id} {...poll} >
+              <div className="choices mt-2 d-flex flex-column">
+              {poll.choices?.map((choice) => (
+                <VoteButton key={choice.id} {...choice} />
+              ))}
+            </div>
+            </Poll>
+          ))}
         </div>
       </div>
     );

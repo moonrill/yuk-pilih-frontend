@@ -1,5 +1,5 @@
 // eslint-disable-next-line react/prop-types
-export const Choice = ({percentage = 0, name = 'choice'}) => {
+export const ChoiceResult = ({percentage = 0, name = 'choice'}) => {
   return (
     <div className="choice row align-items-center mb-2">
       <div className="col-8">
@@ -7,7 +7,7 @@ export const Choice = ({percentage = 0, name = 'choice'}) => {
           <div className="progress-bar" style={{ width: `${percentage}%` }}></div>
         </div>
       </div>
-      <div className="col-lg-2 text-wrap">
+      <div className="col-lg-3 text-wrap">
         <div className="choice-desc" style={{ fontSize: '14px' }}>
           <div className="m-0 choice-name">{name}</div>
           <div className="m-0 choice-percentage">{percentage}%</div>
