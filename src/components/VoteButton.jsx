@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 export const VoteButton = ({
@@ -12,6 +13,7 @@ export const VoteButton = ({
   onVoteComplete,
 }) => {
   const token = useSelector((state) => state.auth.token);
+  const [message, setMessage] = useState(null);
   const handleCLick = () => {
     onClick();
     if (!isSaving && !isFetching && !loading) {
@@ -19,6 +21,7 @@ export const VoteButton = ({
         .unwrap()
         .then((res) => {
           console.log(res);
+          setMessage(res.message);
           onVoteComplete();
         })
         .catch((err) => {
@@ -35,6 +38,8 @@ export const VoteButton = ({
         <div className="spinner-border text-primary" role="status">
           <span className="sr-only"></span>
         </div>
+      ) : message ? (
+        <div className="text-success">{message} !</div>
       ) : (
         <button
           type="button"

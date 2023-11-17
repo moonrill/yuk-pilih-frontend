@@ -30,7 +30,7 @@ export const Layout = () => {
 
   if (!token && !user) return <Navigate to={'/login'} />;
 
-  if(shouldReset) return <Navigate to={'/reset-password'}/>
+  if (shouldReset) return <Navigate to={'/reset-password'} />;
 
   // if (token && !user) {
   //   dispatch(authApi.endpoints.getUser.initiate(token))
@@ -47,9 +47,14 @@ export const Layout = () => {
     <>
       <main>
         <Navbar />
-        <ModalPoll />
         <Outlet />
-        {user?.role == 'admin' ? <Fab /> : null}
+        {user?.role ==
+          'admin' && (
+            <>
+              <ModalPoll />
+              <Fab />
+            </>
+          )}
       </main>
     </>
   );
