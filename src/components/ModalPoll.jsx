@@ -1,5 +1,6 @@
-import { PlusLg, Trash3Fill } from "react-bootstrap-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useState } from 'react';
+import { PlusLg, Trash3Fill } from 'react-bootstrap-icons';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   addChoice,
   removeChoice,
@@ -8,15 +9,14 @@ import {
   setDeadline,
   setDescription,
   setTitle,
-} from "../reducer/formPollSlice";
-import { closeModal } from "../reducer/modalSlice";
-import { useCreatePollMutation } from "../services/pollApi";
-import { useState } from "react";
+} from '../reducer/formPollSlice';
+import { closeModal } from '../reducer/modalSlice';
+import { useCreatePollMutation } from '../services/pollApi';
 
 export const ModalPoll = () => {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
-  const [createPoll, {isLoading}] = useCreatePollMutation();
+  const [createPoll, { isLoading }] = useCreatePollMutation();
   const [error, setError] = useState(null);
   const isOpen = useSelector((state) => state.modal.isOpen);
   const formData = useSelector((state) => state.formPoll);
@@ -29,40 +29,39 @@ export const ModalPoll = () => {
   };
 
   const handleChange = (e, index) => {
-    if (e.target.name === "choices")
+    setError(null);
+    if (e.target.name === 'choices')
       return dispatch(setChoices({ index, value: e.target.value }));
 
     return dispatch(action[e.target.name](e.target.value));
   };
 
   const transformData = (key, value) => {
-    if(Array.isArray(value)) {
-      let newValue = value.filter(item => item !== "");
+    if (Array.isArray(value)) {
+      let newValue = value.filter((item) => item !== '');
       return newValue.length >= 2 ? newValue : undefined;
     }
 
-    if(value === '') return undefined;
+    if (value === '') return undefined;
 
-    if(key === 'deadline') return value.split('T').join(' ') + ':00';
+    if (key === 'deadline') return value.split('T').join(' ') + ':00';
 
     return value;
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     const transformedData = JSON.parse(JSON.stringify(formData, transformData));
-    
-    createPoll({data: transformedData, token})
-      .unwrap()
-      .then(() => dispatch(closeModal()))
-      .catch(({data}) => {
-        setError(data.message)
 
-      // Set timeout to clear error after 5 seconds
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+    createPoll({ data: transformedData, token })
+      .unwrap()
+      .then(() => {
+        dispatch(resetForm());
+        dispatch(closeModal());
+      })
+      .catch(({ data }) => {
+        setError(data.message);
       });
   };
 
@@ -70,7 +69,7 @@ export const ModalPoll = () => {
     isOpen && (
       <div
         className="row vw-100 start-0 top-0 min-vh-100 overflow-y-auto position-fixed z-3 p-4"
-        style={{ backgroundColor: "rgba(0,0,0,0.5)", maxHeight: "100vh" }}
+        style={{ backgroundColor: 'rgba(0,0,0,0.5)', maxHeight: '100vh' }}
       >
         <div className="card col-6 start-50 translate-middle-x z-3 p-0">
           <div className="card-header">
@@ -147,14 +146,14 @@ export const ModalPoll = () => {
                 <button
                   type="button"
                   className="btn btn-primary d-flex justify-content-center align-items-center"
-                  style={{ width: "50px", height: "40px" }}
+                  style={{ width: '50px', height: '40px' }}
                   onClick={() => dispatch(addChoice())}
                 >
                   <PlusLg />
                 </button>
               )}
             </form>
-          {error && (
+            {error && (
               <div className="error-message text-danger mt-3">
                 <p>{error} </p>
               </div>
@@ -175,16 +174,21 @@ export const ModalPoll = () => {
             >
               Cancel
             </button>
-            <button className="btn btn-primary" type="submit" disabled={isLoading} form="form-poll">
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={isLoading}
+              form="form-poll"
+            >
               {isLoading ? (
                 <div className="d-flex align-items-center gap-2">
-                <div
-                  className="spinner-border text-light"
-                  role="status"
-                  style={{ width: '1.5rem', height: '1.5rem' }}
-                ></div>
-                <span className="sr-only">Loading...</span>
-              </div>
+                  <div
+                    className="spinner-border text-light"
+                    role="status"
+                    style={{ width: '1.5rem', height: '1.5rem' }}
+                  ></div>
+                  <span className="sr-only">Loading...</span>
+                </div>
               ) : (
                 'Add'
               )}
