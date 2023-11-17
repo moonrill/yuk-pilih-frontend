@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { setToken } from '../reducer/authSlice';
 import { setPassword, setUsername } from '../reducer/loginSlice';
 import { useLoginMutation } from '../services/authApi';
@@ -12,7 +12,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   // Check if user has logged in
   if (token) return <Navigate to={'/'} />;
@@ -28,32 +27,27 @@ const Login = () => {
 
         // Set token in state and localstorage
         dispatch(setToken(response?.access_token));
-
-        // Redirect to poll page
-        navigate('/');
       })
-      .catch(({ data }) => {
-        setError(data.message)
-
-      // Set timeout to clear error after 5 seconds
-      setTimeout(() => {
-        setError(null);
-      }, 5000);
+      .catch(({ data, status }) => {
+        setError(data.message);
       });
   };
 
   return (
     <div className="container vh-100 ">
       <div className="row d-flex justify-content-center align-items-center h-100">
-        <div className="col-6 p-5 border rounded-4 shadow">
+        <div className="col-lg-6 p-5 border rounded-4 shadow">
           <form onSubmit={handleSubmit}>
             <h1 className="mb-5">
               <span>Yuk</span>
-              <span className='text-primary'>Pilih</span>
+              <span className="text-primary">Pilih</span>
             </h1>
             <div className="form-floating mb-3">
               <input
-                onChange={({ target }) => dispatch(setUsername(target.value))}
+                onChange={({ target }) => {
+                  setError(null);
+                  dispatch(setUsername(target.value));
+                }}
                 type="text"
                 className="form-control"
                 id="username"
@@ -64,8 +58,11 @@ const Login = () => {
             </div>
             <div className="form-floating mb-2">
               <input
-                onChange={({ target }) => dispatch(setPassword(target.value))}
-                type={showPassword ? "text" : "password"}
+                onChange={({ target }) => {
+                  setError(null);
+                  dispatch(setPassword(target.value));
+                }}
+                type={showPassword ? 'text' : 'password'}
                 className="form-control"
                 id="password"
                 placeholder="Password"
@@ -74,8 +71,15 @@ const Login = () => {
               <label htmlFor="password">Password</label>
             </div>
             <div className="form-check mb-3">
-              <label htmlFor="showPassword" className='user-select-none'>Show Password</label>
-              <input type="checkbox" id='showPassword' className='form-check-input' onChange={() => setShowPassword(!showPassword)}/>
+              <label htmlFor="showPassword" className="user-select-none">
+                Show Password
+              </label>
+              <input
+                type="checkbox"
+                id="showPassword"
+                className="form-check-input"
+                onChange={() => setShowPassword(!showPassword)}
+              />
             </div>
 
             {error && (

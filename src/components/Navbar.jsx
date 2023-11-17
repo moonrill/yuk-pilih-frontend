@@ -1,6 +1,6 @@
-import { useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../services/authApi";
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useLogoutMutation } from '../services/authApi';
 
 // eslint-disable-next-line react/prop-types
 export const Navbar = () => {
@@ -10,7 +10,7 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     logout(token)
-      .then(() => navigate("/login"))
+      .then(() => navigate('/login'))
       .catch((err) => console.log(err));
   };
 
@@ -19,22 +19,22 @@ export const Navbar = () => {
       <div className="container">
         <div className="d-flex align-items-center gap-3">
           <Link
-            to={"/"}
+            to={'/'}
             className="navbar-brand fs-4 text-lg fw-semibold m-0 py-2"
           >
             <span>Yuk</span>
             <span className="text-primary">Pilih</span>
           </Link>
 
-          {user?.role === "user" && (
+          {user?.role === 'user' && (
             <ul className="navbar-nav d-flex flex-row gap-3">
-              <Link to={"/"} className="nav-link">
+              <Link to={'/'} className="nav-link">
                 Home
               </Link>
-              <Link to={"/your-votes"} className="nav-link">
+              <Link to={'/your-votes'} className="nav-link">
                 Your votes
               </Link>
-              <Link to={"/expired-polls"} className="nav-link">
+              <Link to={'/expired-polls'} className="nav-link">
                 Expired polls
               </Link>
             </ul>
@@ -48,7 +48,18 @@ export const Navbar = () => {
             onClick={handleLogout}
             disabled={isLoading}
           >
-            Logout
+            {isLoading ? (
+              <div className="d-flex align-items-center gap-2">
+                <div
+                  className="spinner-border text-light"
+                  role="status"
+                  style={{ width: '1.5rem', height: '1.5rem' }}
+                ></div>
+                <span className="sr-only">Loading...</span>
+              </div>
+            ) : (
+              'Logout'
+            )}
           </button>
         </div>
       </div>
